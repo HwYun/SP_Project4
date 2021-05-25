@@ -1,0 +1,7 @@
+Phase 1: Building and Testing Your Shell
+
+shell의 기본 명령어들을 구현한다.
+
+cd, cd .., ls, mkdir, rmdir, touch, car, echo, exit 을 구현함.
+
+make 후 myshell 실행파일을 실행하여 위의 shell 명령어들을 입력한다.
