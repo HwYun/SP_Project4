@@ -8,6 +8,7 @@
 void eval(char *cmdline);
 int parseline(char *buf, char **argv);
 int builtin_command(char **argv); 
+void my_cd(char **argv);
 
 int main() 
 {
@@ -36,13 +37,21 @@ void eval(char *cmdline)
 	pid_t pid;           /* Process id */
 
 	strcpy(buf, cmdline);
-	bg = parseline(buf, argv); 
+	bg = parseline(buf, argv);
+
 	if (argv[0] == NULL)  
 		return;   /* Ignore empty lines */
 
-	if (!builtin_command(argv)) { //quit -> exit(0), & -> ignore, other -> run
+	if(strcmp(argv[0],"exit") == 0) exit(1);
+	else if(strcmp(argv[0], "cd") == 0){
+		my_cd(argv);
+	}
+	else if (!builtin_command(argv)) { //quit -> exit(0), & -> ignore, other -> run
 		if((pid = Fork()) == 0){  // Child process
-			if (execve(argv[0], argv, environ) < 0) {	//ex) /bin/ls ls -al &
+			//char tmp_argv[20] = "/bin/";
+			//strcat(tmp_argv,argv[0]);
+			//*argv=tmp_argv;
+			if (execvp(argv[0], argv) < 0) {	//ex) /bin/ls ls -al &
 				printf("%s: Command not found.\n", argv[0]);
 				exit(0);
 			}
@@ -105,5 +114,17 @@ int parseline(char *buf, char **argv)
 }
 /* $end parseline */
 
+/* $begin my_cd */
+/* my_cd - execute cd instruction */
+void my_cd(char **argv){
+	int argc=0;
+	while(argv[argc++] != NULL);
+	argc--;
+	if(argc == 1)
+		chdir(getenv("HOME"));
+	else if(argc == 2){
+		if(chdir(argv[1])) printf("There's no directory.\n");
+	}
+}
 
 
