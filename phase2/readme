@@ -1,0 +1,7 @@
+Phase 2: Redirection and Piping in Your Shell
+
+Phase 1에서 구현했던 simple shell의 기능을 확장한다.
+
+Pipeline 기능을 추가한다.
+
+make 후 myshell 실행파일을 실행한다.
